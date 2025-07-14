@@ -1,3 +1,4 @@
+
 const data = {
   1: [
     { id: "mat1", nombre: "Matemática Básica", requisitos: [] },
