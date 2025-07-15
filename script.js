@@ -170,6 +170,17 @@ function render() {
   updateStates();
 }
 
+function reiniciar() {
+  for (const ciclo in data) {
+    data[ciclo].forEach((curso) => {
+      curso.estado = "locked";
+      curso.element.dataset.state = "locked";
+    });
+  }
+  actualizarDesbloqueos();
+  guardarProgreso();
+}
+
 function toggleCurso(nombre) {
   const obj = cursoElements.get(nombre);
   if (!obj) return;
