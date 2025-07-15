@@ -1,10 +1,9 @@
 :root {
-  --wine-light: #c97b7b;
-  --wine: #8b2e3f;
-  --wine-dark: #4d1824;
+  --orange-light: #ffe5b4;
   --orange: #fca311;
-  --bg: #faf7f7;
-  --locked: #dadada;
+  --orange-dark: #cc8400;
+  --bg: #fffaf2;
+  --locked: #e0e0e0;
   --text: #222;
 }
 
@@ -53,7 +52,7 @@ footer button {
   padding: 0.5rem 1.2rem;
   background: white;
   border: none;
-  color: var(--wine-dark);
+  color: var(--orange-dark);
   border-radius: 0.5rem;
   cursor: pointer;
   font-weight: bold;
@@ -61,7 +60,7 @@ footer button {
 }
 
 footer button:hover {
-  background: var(--wine);
+  background: var(--orange);
   color: white;
 }
 
@@ -79,7 +78,7 @@ section {
   background: #fff;
   padding: 1rem;
   border-radius: 1rem;
-  border: 2px solid var(--orange);
+  border: 2px solid var(--orange-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,7 +88,7 @@ section {
 section h2 {
   text-align: center;
   font-size: 1.1rem;
-  color: var(--wine-dark);
+  color: var(--orange-dark);
   margin-bottom: 1rem;
   background: var(--locked);
   padding: 0.5rem 1rem;
@@ -100,7 +99,7 @@ section h2 {
 
 .curso {
   width: 100%;
-  border: 2px solid var(--wine-dark);
+  border: 2px solid var(--orange-dark);
   border-radius: 0.75rem;
   padding: 1rem;
   background: var(--locked);
@@ -127,14 +126,13 @@ section h2 {
 }
 
 .curso[data-state="completed"] {
-  background: var(--wine);
+  background: var(--orange-dark);
   color: #fff;
 }
 
 .curso[data-state="completed"] h3 {
   text-decoration: line-through;
 }
-
 
 .curso[data-state="locked"] {
   opacity: 0.6;
