@@ -135,13 +135,13 @@ const data = [
   },
 ];
 
-// --- Persistencia y utilidades ---
+// --- Lógica interactiva ---
 const STORAGE_KEY = "admin_malla_state_v1";
-const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+let saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 const cursoElements = new Map();
 
 function render() {
- const grid = document.getElementById("grid");
+  const grid = document.getElementById("grid");
   grid.innerHTML = "";
 
   data.forEach((nivel) => {
@@ -160,7 +160,6 @@ function render() {
       }`;
       div.addEventListener("click", () => toggleCurso(c.nombre));
       col.appendChild(div);
-
       cursoElements.set(c.nombre, { el: div, req: c.req });
     });
 
@@ -197,114 +196,17 @@ function updateStates() {
 
 function resetMalla() {
   localStorage.removeItem(STORAGE_KEY);
-  location.reload();
+  saved = {};
+  updateStates();
 }
 
-document.addEventListener("DOMContentLoaded", render);
+// --- Inicialización ---
+document.addEventListener("DOMContentLoaded", () => {
+  render();
 
-
-const grid = document.getElementById("grid");
-
-function guardarProgreso() {
-  localStorage.setItem("progresoMarketing", JSON.stringify(data));
-}
-
-function cargarProgreso() {
-  const progreso = localStorage.getItem("progresoMarketing");
-  if (progreso) {
-    const parsed = JSON.parse(progreso);
-    for (const ciclo in parsed) {
-      parsed[ciclo].forEach((curso, i) => {
-        data[ciclo][i].estado = curso.estado;
-      });
-    }
+  // Conecta botón si existe
+  const resetButton = document.querySelector("button[onclick='reiniciar()']");
+  if (resetButton) {
+    resetButton.onclick = resetMalla;
   }
-}
-
-function crearCurso(curso) {
-  const div = document.createElement("div");
-  div.className = "curso";
-  div.dataset.state = curso.estado || "locked";
-  div.innerHTML = `<h3>${curso.nombre}</h3>`;
-
-  if (curso.requisitos) {
-    const req = document.createElement("small");
-    req.textContent = `Requiere: ${curso.requisitos.join(", ")}`;
-    div.appendChild(req);
-  }
-
-  div.addEventListener("click", () => {
-    if (div.dataset.state === "unlocked") {
-      div.dataset.state = "completed";
-      curso.estado = "completed";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    } else if (div.dataset.state === "completed") {
-      div.dataset.state = "unlocked";
-      curso.estado = "unlocked";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    }
-  });
-
-  curso.element = div;
-  return div;
-}
-
-function actualizarDesbloqueos() {
-  const completados = new Set();
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") {
-        completados.add(curso.nombre);
-      }
-    });
-  }
-
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") return;
-
-      if (!curso.requisitos || curso.requisitos.every((req) => completados.has(req))) {
-        curso.estado = "unlocked";
-        curso.element.dataset.state = "unlocked";
-      } else {
-        curso.estado = "locked";
-        curso.element.dataset.state = "locked";
-      }
-    });
-  }
-}
-
-function reiniciar() {
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      curso.estado = "locked";
-      curso.element.dataset.state = "locked";
-    });
-  }
-  actualizarDesbloqueos();
-  guardarProgreso();
-}
-
-function render() {
-  grid.innerHTML = "";
-  for (const ciclo in data) {
-    const columna = document.createElement("section");
-    const titulo = document.createElement("h2");
-    titulo.textContent = `Ciclo ${ciclo}`;
-    columna.appendChild(titulo);
-
-    data[ciclo].forEach((curso) => {
-      const div = crearCurso(curso);
-      columna.appendChild(div);
-    });
-
-    grid.appendChild(columna);
-  }
-
-  actualizarDesbloqueos();
-}
-
-cargarProgreso();
-render();
+});
