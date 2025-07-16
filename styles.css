@@ -1,9 +1,9 @@
 :root {
-  --orange-light: #ffe5b4;
+  --orange-light: #ffba66;
   --orange: #fca311;
-  --orange-dark: #cc8400;
-  --bg: #fffaf2;
-  --locked: #e0e0e0;
+  --orange-dark: #d88500;
+  --bg: #faf7f7;
+  --locked: #dadada;
   --text: #222;
 }
 
@@ -60,7 +60,7 @@ footer button {
 }
 
 footer button:hover {
-  background: var(--orange);
+  background: var(--orange-dark);
   color: white;
 }
 
@@ -78,7 +78,7 @@ section {
   background: #fff;
   padding: 1rem;
   border-radius: 1rem;
-  border: 2px solid var(--orange-dark);
+  border: 2px solid var(--orange);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +88,7 @@ section {
 section h2 {
   text-align: center;
   font-size: 1.1rem;
-  color: var(--text); /* Negro */
+  color: black;
   margin-bottom: 1rem;
   background: var(--locked);
   padding: 0.5rem 1rem;
