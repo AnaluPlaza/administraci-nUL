@@ -1,3 +1,4 @@
+// --- Datos de ciclos y cursos ---
 const data = [
   {
     ciclo: 1,
@@ -134,109 +135,69 @@ const data = [
   },
 ];
 
-
-const grid = document.getElementById("grid");
-
-function guardarProgreso() {
-  localStorage.setItem("progresoMarketing", JSON.stringify(data));
-}
-
-function cargarProgreso() {
-  const progreso = localStorage.getItem("progresoMarketing");
-  if (progreso) {
-    const parsed = JSON.parse(progreso);
-    for (const ciclo in parsed) {
-      parsed[ciclo].forEach((curso, i) => {
-        data[ciclo][i].estado = curso.estado;
-      });
-    }
-  }
-}
-
-function crearCurso(curso) {
-  const div = document.createElement("div");
-  div.className = "curso";
-  div.dataset.state = curso.estado || "locked";
-  div.innerHTML = `<h3>${curso.nombre}</h3>`;
-
-  if (curso.requisitos) {
-    const req = document.createElement("small");
-    req.textContent = `Requiere: ${curso.requisitos.join(", ")}`;
-    div.appendChild(req);
-  }
-
-  div.addEventListener("click", () => {
-    if (div.dataset.state === "unlocked") {
-      div.dataset.state = "completed";
-      curso.estado = "completed";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    } else if (div.dataset.state === "completed") {
-      div.dataset.state = "unlocked";
-      curso.estado = "unlocked";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    }
-  });
-
-  curso.element = div;
-  return div;
-}
-
-function actualizarDesbloqueos() {
-  const completados = new Set();
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") {
-        completados.add(curso.nombre);
-      }
-    });
-  }
-
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") return;
-
-      if (!curso.requisitos || curso.requisitos.every((req) => completados.has(req))) {
-        curso.estado = "unlocked";
-        curso.element.dataset.state = "unlocked";
-      } else {
-        curso.estado = "locked";
-        curso.element.dataset.state = "locked";
-      }
-    });
-  }
-}
-
-function reiniciar() {
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      curso.estado = "locked";
-      curso.element.dataset.state = "locked";
-    });
-  }
-  actualizarDesbloqueos();
-  guardarProgreso();
-}
+// --- Persistencia y utilidades ---
+const STORAGE_KEY = "admin_malla_state_v1";
+const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+const cursoElements = new Map();
 
 function render() {
+  const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  for (const ciclo in data) {
-    const columna = document.createElement("section");
-    const titulo = document.createElement("h2");
-    titulo.textContent = `Ciclo ${ciclo}`;
-    columna.appendChild(titulo);
 
-    data[ciclo].forEach((curso) => {
-      const div = crearCurso(curso);
-      columna.appendChild(div);
+  data.forEach((nivel) => {
+    const col = document.createElement("section");
+    const title = document.createElement("h2");
+    title.textContent = `Ciclo ${nivel.ciclo}`;
+    col.appendChild(title);
+
+    nivel.cursos.forEach((c) => {
+      const div = document.createElement("div");
+      div.className = "curso";
+      div.dataset.state = "locked";
+      div.dataset.nombre = c.nombre;
+      div.innerHTML = `<h3>${c.nombre}</h3>${
+        c.req.length ? `<small>Req: ${c.req.join(", ")}</small>` : ""
+      }`;
+      div.addEventListener("click", () => toggleCurso(c.nombre));
+      col.appendChild(div);
+
+      cursoElements.set(c.nombre, { el: div, req: c.req });
     });
 
-    grid.appendChild(columna);
-  }
+    grid.appendChild(col);
+  });
 
-  actualizarDesbloqueos();
+  updateStates();
 }
 
-cargarProgreso();
-render();
+function toggleCurso(nombre) {
+  const obj = cursoElements.get(nombre);
+  if (!obj) return;
+
+  const state = obj.el.dataset.state;
+  if (state !== "unlocked" && state !== "completed") return;
+
+  saved[nombre] = !saved[nombre];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+  updateStates();
+}
+
+function updateStates() {
+  cursoElements.forEach(({ el, req }, nombre) => {
+    const completed = !!saved[nombre];
+    const unlocked = req.every((r) => !!saved[r]);
+
+    el.dataset.state = completed
+      ? "completed"
+      : unlocked
+      ? "unlocked"
+      : "locked";
+  });
+}
+
+function resetMalla() {
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+document.addEventListener("DOMContentLoaded", render);
