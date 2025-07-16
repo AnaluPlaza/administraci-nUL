@@ -134,109 +134,85 @@ const data = [
   },
 ];
 
+const STORAGE_KEY = 'progresoAdministracion';
 
-const grid = document.getElementById("grid");
+const grid = document.getElementById('grid');
+let progreso = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
 function guardarProgreso() {
-  localStorage.setItem("progresoMarketing", JSON.stringify(data));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progreso));
 }
 
-function cargarProgreso() {
-  const progreso = localStorage.getItem("progresoMarketing");
-  if (progreso) {
-    const parsed = JSON.parse(progreso);
-    for (const ciclo in parsed) {
-      parsed[ciclo].forEach((curso, i) => {
-        data[ciclo][i].estado = curso.estado;
-      });
-    }
-  }
-}
+function crearCurso(curso, ciclo) {
+  const div = document.createElement('div');
+  div.className = 'course';
+  div.textContent = curso.nombre;
+  div.dataset.nombre = curso.nombre;
+  div.dataset.ciclo = ciclo;
 
-function crearCurso(curso) {
-  const div = document.createElement("div");
-  div.className = "curso";
-  div.dataset.state = curso.estado || "locked";
-  div.innerHTML = `<h3>${curso.nombre}</h3>`;
-
-  if (curso.requisitos) {
-    const req = document.createElement("small");
-    req.textContent = `Requiere: ${curso.requisitos.join(", ")}`;
-    div.appendChild(req);
+  const estado = progreso[curso.nombre];
+  if (estado === 'completed') {
+    div.classList.add('completed');
+  } else if (estado === 'unlocked') {
+    div.classList.add('unlocked');
+  } else {
+    div.classList.add('locked');
   }
 
-  div.addEventListener("click", () => {
-    if (div.dataset.state === "unlocked") {
-      div.dataset.state = "completed";
-      curso.estado = "completed";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    } else if (div.dataset.state === "completed") {
-      div.dataset.state = "unlocked";
-      curso.estado = "unlocked";
-      actualizarDesbloqueos();
-      guardarProgreso();
-    }
-  });
-
-  curso.element = div;
+  div.onclick = () => manejarClick(div, curso);
   return div;
 }
 
-function actualizarDesbloqueos() {
-  const completados = new Set();
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") {
-        completados.add(curso.nombre);
-      }
-    });
+function manejarClick(div, curso) {
+  const estado = progreso[curso.nombre];
+
+  if (estado === 'locked') return;
+
+  if (estado === 'unlocked') {
+    progreso[curso.nombre] = 'completed';
+  } else if (estado === 'completed') {
+    progreso[curso.nombre] = 'unlocked';
   }
 
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      if (curso.estado === "completed") return;
-
-      if (!curso.requisitos || curso.requisitos.every((req) => completados.has(req))) {
-        curso.estado = "unlocked";
-        curso.element.dataset.state = "unlocked";
-      } else {
-        curso.estado = "locked";
-        curso.element.dataset.state = "locked";
-      }
-    });
-  }
-}
-
-function reiniciar() {
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      curso.estado = "locked";
-      curso.element.dataset.state = "locked";
-    });
-  }
-  actualizarDesbloqueos();
+  actualizarCursos();
   guardarProgreso();
 }
 
-function render() {
-  grid.innerHTML = "";
-  for (const ciclo in data) {
-    const columna = document.createElement("section");
-    const titulo = document.createElement("h2");
-    titulo.textContent = `Ciclo ${ciclo}`;
-    columna.appendChild(titulo);
+function actualizarCursos() {
+  grid.innerHTML = '';
+  const completados = new Set(Object.keys(progreso).filter(k => progreso[k] === 'completed'));
 
-    data[ciclo].forEach((curso) => {
-      const div = crearCurso(curso);
-      columna.appendChild(div);
+  data.forEach((columna, idx) => {
+    const colDiv = document.createElement('div');
+    colDiv.className = 'column';
+    colDiv.innerHTML = `<h3>Ciclo ${columna.ciclo}</h3>`;
+
+    columna.cursos.forEach(curso => {
+      const requisitos = curso.req || [];
+      const nombreBase = curso.nombre.replace(" (Electivo)", "");
+      const cumplidos = requisitos.every(r => completados.has(r));
+      const estado = progreso[curso.nombre];
+
+      if (!estado || estado === 'locked') {
+        progreso[curso.nombre] = cumplidos ? 'unlocked' : 'locked';
+      }
+
+      const divCurso = crearCurso(curso, columna.ciclo);
+      colDiv.appendChild(divCurso);
     });
 
-    grid.appendChild(columna);
-  }
-
-  actualizarDesbloqueos();
+    grid.appendChild(colDiv);
+  });
 }
 
-cargarProgreso();
-render();
+function reiniciar() {
+  if (confirm("¿Estás seguro de que deseas reiniciar tu progreso?")) {
+    progreso = {};
+    guardarProgreso();
+    actualizarCursos();
+  }
+}
+
+actualizarCursos();
+
+
