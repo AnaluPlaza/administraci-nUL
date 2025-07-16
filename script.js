@@ -200,21 +200,8 @@ function resetMalla() {
   updateStates();
 }
 
-// --- Inicialización ---
 document.addEventListener("DOMContentLoaded", () => {
   render();
-
-  // Conecta botón si existe
-  function reiniciar() {
-  for (const ciclo in data) {
-    data[ciclo].forEach((curso) => {
-      curso.estado = "locked";
-      curso.element.dataset.state = "locked";
-    });
-  }
-    
-  const resetButton = document.querySelector("button[onclick='reiniciar()']");
-  if (resetButton) {
-    resetButton.onclick = resetMalla;
-  }
+  const resetButton = document.getElementById("reiniciar");
+  if (resetButton) resetButton.addEventListener("click", resetMalla);
 });
