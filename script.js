@@ -1,218 +1,211 @@
-const data = [
-  {
-    ciclo: 1,
-    cursos: [
-      { nombre: "Globalización y Realidad Nacional", req: [] },
-      { nombre: "Lenguaje y Comunicación I", req: [] },
-      { nombre: "Metodologías de Investigación", req: [] },
-      { nombre: "Desarrollo Personal y Social", req: [] },
-      { nombre: "Matemática Básica", req: [] },
-      { nombre: "Ética Cívica", req: [] },
-    ],
-  },
-  {
-    ciclo: 2,
-    cursos: [
-      { nombre: "Economía y Empresa", req: [] },
-      { nombre: "Lenguaje y Comunicación II", req: ["Lenguaje y Comunicación I"] },
-      { nombre: "Procesos Sociales y Políticos", req: [] },
-      { nombre: "Temas de Filosofía", req: [] },
-      { nombre: "Estadística Básica para los Negocios", req: ["Matemática Básica"] },
-      { nombre: "Matemática Aplicada a los Negocios", req: ["Matemática Básica"] },
-    ],
-  },
-  {
-    ciclo: 3,
-    cursos: [
-      { nombre: "Fundamentos de Administración", req: ["Economía y Empresa"] },
-      { nombre: "Introducción a las Finanzas", req: ["Matemática Aplicada a los Negocios"] },
-      { nombre: "Contabilidad General", req: ["Matemática Aplicada a los Negocios"] },
-      { nombre: "Matemática para la Gestión de Negocios", req: ["Matemática Aplicada a los Negocios"] },
-      { nombre: "Estadística para la Gestión Empresarial I", req: ["Estadística Básica para los Negocios"] },
-      { nombre: "Herramientas Informáticas para la Gestión I", req: ["Economía y Empresa"] },
-    ],
-  },
-  {
-    ciclo: 4,
-    cursos: [
-      { nombre: "Planeamiento Estratégico I", req: ["Fundamentos de Administración"] },
-      { nombre: "Costos y Presupuestos", req: ["Contabilidad General"] },
-      { nombre: "Introducción al Marketing", req: ["Fundamentos de Administración"] },
-      { nombre: "Estadística para la Gestión Empresarial II", req: ["Estadística para la Gestión Empresarial I"] },
-      { nombre: "Microeconomía", req: ["Economía y Empresa"] },
-      { nombre: "Herramientas Informáticas para la Gestión II", req: ["Herramientas Informáticas para la Gestión I"] },
-    ],
-  },
-  {
-    ciclo: 5,
-    cursos: [
-      { nombre: "Diseño Organizacional", req: ["Planeamiento Estratégico I"] },
-      { nombre: "Gestión de Personas", req: ["Fundamentos de Administración"] },
-      { nombre: "Elaboración de Estados Financieros", req: ["Costos y Presupuestos", "Introducción a las Finanzas"] },
-      { nombre: "Gestión Legal Empresarial", req: ["Planeamiento Estratégico I"] },
-      { nombre: "Marketing Estratégico", req: ["Introducción al Marketing"] },
-      { nombre: "Macroeconomía", req: ["Microeconomía"] },
-    ],
-  },
-  {
-    ciclo: 6,
-    cursos: [
-      { nombre: "Planeamiento Estratégico II", req: ["Diseño Organizacional"] },
-      { nombre: "Análisis de la Información Financiera", req: ["Elaboración de Estados Financieros"] },
-      { nombre: "Comportamiento Organizacional", req: ["Gestión de Personas"] },
-      { nombre: "Investigación y Análisis de Mercado", req: ["Marketing Estratégico", "Estadística para la Gestión Empresarial II"] },
-      { nombre: "Administración de Operaciones", req: ["Diseño Organizacional"] },
-      { nombre: "Tecnologías de Información para la Gestión", req: ["Herramientas Informáticas para la Gestión II"] },
-    ],
-  },
-  {
-    ciclo: 7,
-    cursos: [
-      { nombre: "Taller de Innovación y Creatividad Empresarial", req: ["Planeamiento Estratégico II"] },
-      { nombre: "Logística y Comercio Internacional", req: ["Administración de Operaciones"] },
-      { nombre: "Gestión Financiera", req: ["Análisis de la Información Financiera"] },
-      { nombre: "Taller de Liderazgo y Habilidades Gerenciales", req: ["Comportamiento Organizacional"] },
-      { nombre: "Legislación Laboral", req: ["Gestión de Personas"] },
-      { nombre: "Gestión Comercial", req: ["Investigación y Análisis de Mercado"] },
-      { nombre: "Gestión de Empresas Familiares (Electivo)", req: ["Gestión Legal Empresarial"] },
-      { nombre: "Sistemas Integrados de Gestión (Electivo)", req: ["Planeamiento Estratégico II"] },
-      { nombre: "Finanzas Personales y Nuevos Negocios (Electivo)", req: ["Elaboración de Estados Financieros"] },
-      { nombre: "Gestión del Talento Global (Electivo)", req: ["Gestión de Personas"] },
-      { nombre: "Gestión de Personas por Competencias (Electivo)", req: ["Gestión de Personas"] },
-      { nombre: "Branding Estratégico (Electivo)", req: ["Marketing Estratégico"] },
-      { nombre: "Taller de Marketing Digital (Electivo)", req: ["Marketing Estratégico"] },
-    ],
-  },
-  {
-    ciclo: 8,
-    cursos: [
-      { nombre: "Taller de Emprendimiento y Creación de Negocios", req: ["Gestión Financiera"] },
-      { nombre: "Gestión de la Cadena de Suministro", req: ["Logística y Comercio Internacional"] },
-      { nombre: "Mercado de Valores", req: ["Gestión Financiera"] },
-      { nombre: "Ética y Sostenibilidad Empresarial", req: ["Legislación Laboral"] },
-      { nombre: "Taller de Investigación Empresarial", req: ["Planeamiento Estratégico II"] },
-      { nombre: "E.R.P. para la Gestión Empresarial (Electivo)", req: ["Tecnologías de Información para la Gestión"] },
-      { nombre: "Turismo Sostenible (Electivo)", req: ["Diseño Organizacional"] },
-      { nombre: "Agilidad Organizacional (Electivo)", req: ["Taller de Innovación y Creatividad Empresarial"] },
-      { nombre: "Gerencia de Activos Financieros (Electivo)", req: ["Gestión Financiera"] },
-    ],
-  },
-  {
-    ciclo: 9,
-    cursos: [
-      { nombre: "Inteligencia de Negocios", req: ["Tecnologías de Información para la Gestión"] },
-      { nombre: "Gerencia de Operaciones", req: ["Gestión de la Cadena de Suministro"] },
-      { nombre: "Gerencia Financiera", req: ["Mercado de Valores"] },
-      { nombre: "Seminario de Investigación en Administración I", req: ["Taller de Investigación Empresarial"] },
-      { nombre: "Gestión de Startups (Electivo)", req: ["Taller de Emprendimiento y Creación de Negocios"] },
-      { nombre: "Juego de Negocios (Electivo)", req: ["Taller de Emprendimiento y Creación de Negocios"] },
-      { nombre: "Gerencia de Proyectos (Electivo)", req: ["Gestión de la Cadena de Suministro"] },
-      { nombre: "Gestión de Inversiones I (Electivo)", req: ["Mercado de Valores"] },
-      { nombre: "Herramientas Informáticas para las Finanzas (Electivo)", req: ["Mercado de Valores"] },
-      { nombre: "Gestión Ambiental (Electivo)", req: ["Ética y Sostenibilidad Empresarial"] },
-      { nombre: "Resolución de Conflictos y Negociación (Electivo)", req: ["Legislación Laboral"] },
-      { nombre: "Trade y Retail Marketing (Electivo)", req: ["Gestión Comercial"] },
-    ],
-  },
-  {
-    ciclo: 10,
-    cursos: [
-      { nombre: "Dirección Estratégica", req: ["Gerencia Financiera"] },
-      { nombre: "Gerencia de Personas", req: ["Taller de Liderazgo y Habilidades Gerenciales"] },
-      { nombre: "Seminario de Investigación en Administración II", req: ["Seminario de Investigación en Administración I"] },
-      { nombre: "Gerencia de Marketing", req: ["Gestión Comercial"] },
-      { nombre: "Business Analytics (Electivo)", req: ["Inteligencia de Negocios"] },
-      { nombre: "Inteligencia Artificial para la Gestión (Electivo)", req: ["Tecnologías de Información para la Gestión"] },
-      { nombre: "Gestión del Servicio (Electivo)", req: ["Gestión de la Cadena de Suministro"] },
-      { nombre: "Modelos de Optimización Logística (Electivo)", req: ["Gestión de la Cadena de Suministro"] },
-      { nombre: "Gestión de Riesgos y Seguros (Electivo)", req: ["Gerencia Financiera"] },
-      { nombre: "Gestión de Inversiones II (Electivo)", req: ["Gestión de Inversiones I"] },
-      { nombre: "Coaching, Mindfulness e Inteligencia Emocional (Electivo)", req: ["Taller de Liderazgo y Habilidades Gerenciales"] },
-      { nombre: "Gobierno Corporativo y Compliance (Electivo)", req: ["Ética y Sostenibilidad Empresarial"] },
-      { nombre: "Marketing B2B (Electivo)", req: ["Gestión Comercial"] },
-    ],
-  },
-];
+const data = {
+  1: [
+    { nombre: "Globalización y Realidad Nacional" },
+    { nombre: "Lenguaje y Comunicación I" },
+    { nombre: "Metodologías de Investigación" },
+    { nombre: "Desarrollo Personal y Social" },
+    { nombre: "Matemática Básica" },
+    { nombre: "Ética Cívica" },
+  ],
+  2: [
+    { nombre: "Economía y Empresa" },
+    { nombre: "Lenguaje y Comunicación II", requisitos: ["Lenguaje y Comunicación I"] },
+    { nombre: "Procesos Sociales y Políticos" },
+    { nombre: "Temas de Filosofía" },
+    { nombre: "Estadística Básica para los Negocios", requisitos: ["Matemática Básica"] },
+    { nombre: "Matemática Aplicada a los Negocios", requisitos: ["Matemática Básica"] },
+  ],
+  3: [
+    { nombre: "Fundamentos de Administración", requisitos: ["Economía y Empresa"] },
+    { nombre: "Introducción a las Finanzas", requisitos: ["Matemática Aplicada a los Negocios"] },
+    { nombre: "Contabilidad General", requisitos: ["Matemática Aplicada a los Negocios"] },
+    { nombre: "Matemática para la Gestión de Negocios", requisitos: ["Matemática Aplicada a los Negocios"] },
+    { nombre: "Estadística para la Gestión Empresarial I", requisitos: ["Estadística Básica para los Negocios"] },
+    { nombre: "Herramientas Informáticas para la Gestión I", requisitos: ["Economía y Empresa"] },
+  ],
+  4: [
+    { nombre: "Planeamiento Estratégico I", requisitos: ["Fundamentos de Administración"] },
+    { nombre: "Costos y Presupuestos", requisitos: ["Contabilidad General"] },
+    { nombre: "Introducción al Marketing", requisitos: ["Fundamentos de Administración"] },
+    { nombre: "Estadística para la Gestión Empresarial II", requisitos: ["Estadística para la Gestión Empresarial I"] },
+    { nombre: "Microeconomía", requisitos: ["Economía y Empresa"] },
+    { nombre: "Herramientas Informáticas para la Gestión II", requisitos: ["Herramientas Informáticas para la Gestión I"] },
+  ],
+  5: [
+    { nombre: "Diseño Organizacional", requisitos: ["Planeamiento Estratégico I"] },
+    { nombre: "Gestión de Personas", requisitos: ["Fundamentos de Administración"] },
+    { nombre: "Elaboración de Estados Financieros", requisitos: ["Costos y Presupuestos", "Introducción a las Finanzas"] },
+    { nombre: "Gestión Legal Empresarial", requisitos: ["Planeamiento Estratégico I"] },
+    { nombre: "Marketing Estratégico", requisitos: ["Introducción al Marketing"] },
+    { nombre: "Macroeconomía", requisitos: ["Microeconomía"] },
+  ],
+  6: [
+    { nombre: "Planeamiento Estratégico II", requisitos: ["Diseño Organizacional"] },
+    { nombre: "Análisis de la Información Financiera", requisitos: ["Elaboración de Estados Financieros"] },
+    { nombre: "Comportamiento Organizacional", requisitos: ["Gestión de Personas"] },
+    { nombre: "Investigación y Análisis de Mercado", requisitos: ["Marketing Estratégico", "Estadística para la Gestión Empresarial II"] },
+    { nombre: "Administración de Operaciones", requisitos: ["Diseño Organizacional"] },
+    { nombre: "Tecnologías de Información para la Gestión", requisitos: ["Herramientas Informáticas para la Gestión II"] },
+  ],
+  7: [
+    { nombre: "Taller de Innovación y Creatividad Empresarial", requisitos: ["Planeamiento Estratégico II"] },
+    { nombre: "Logística y Comercio Internacional", requisitos: ["Administración de Operaciones"] },
+    { nombre: "Gestión Financiera", requisitos: ["Análisis de la Información Financiera"] },
+    { nombre: "Taller de Liderazgo y Habilidades Gerenciales", requisitos: ["Comportamiento Organizacional"] },
+    { nombre: "Legislación Laboral", requisitos: ["Gestión de Personas"] },
+    { nombre: "Gestión Comercial", requisitos: ["Investigación y Análisis de Mercado"] },
+    { nombre: "Gestión de Empresas Familiares (Electivo)", requisitos: ["Gestión Legal Empresarial"], electivo: true },
+    { nombre: "Sistemas Integrados de Gestión (Electivo)", requisitos: ["Planeamiento Estratégico II"], electivo: true },
+    { nombre: "Finanzas Personales y Nuevos Negocios (Electivo)", requisitos: ["Elaboración de Estados Financieros"], electivo: true },
+    { nombre: "Gestión del Talento Global (Electivo)", requisitos: ["Gestión de Personas"], electivo: true },
+    { nombre: "Gestión de Personas por Competencias (Electivo)", requisitos: ["Gestión de Personas"], electivo: true },
+    { nombre: "Branding Estratégico (Electivo)", requisitos: ["Marketing Estratégico"], electivo: true },
+    { nombre: "Taller de Marketing Digital (Electivo)", requisitos: ["Marketing Estratégico"], electivo: true },
+  ],
+  8: [
+    { nombre: "Taller de Emprendimiento y Creación de Negocios", requisitos: ["Gestión Financiera"] },
+    { nombre: "Gestión de la Cadena de Suministro", requisitos: ["Logística y Comercio Internacional"] },
+    { nombre: "Mercado de Valores", requisitos: ["Gestión Financiera"] },
+    { nombre: "Ética y Sostenibilidad Empresarial", requisitos: ["Legislación Laboral"] },
+    { nombre: "Taller de Investigación Empresarial", requisitos: ["Planeamiento Estratégico II"] },
+    { nombre: "E.R.P. para la Gestión Empresarial (Electivo)", requisitos: ["Tecnologías de Información para la Gestión"], electivo: true },
+    { nombre: "Turismo Sostenible (Electivo)", requisitos: ["Diseño Organizacional"], electivo: true },
+    { nombre: "Agilidad Organizacional (Electivo)", requisitos: ["Taller de Innovación y Creatividad Empresarial"], electivo: true },
+    { nombre: "Gerencia de Activos Financieros (Electivo)", requisitos: ["Gestión Financiera"], electivo: true },
+  ],
+  9: [
+    { nombre: "Inteligencia de Negocios", requisitos: ["Tecnologías de Información para la Gestión"] },
+    { nombre: "Gerencia de Operaciones", requisitos: ["Gestión de la Cadena de Suministro"] },
+    { nombre: "Gerencia Financiera", requisitos: ["Mercado de Valores"] },
+    { nombre: "Seminario de Investigación en Administración I", requisitos: ["Taller de Investigación Empresarial"] },
+    { nombre: "Gestión de Startups (Electivo)", requisitos: ["Taller de Emprendimiento y Creación de Negocios"], electivo: true },
+    { nombre: "Juego de Negocios (Electivo)", requisitos: ["Taller de Emprendimiento y Creación de Negocios"], electivo: true },
+    { nombre: "Gerencia de Proyectos (Electivo)", requisitos: ["Gestión de la Cadena de Suministro"], electivo: true },
+    { nombre: "Gestión de Inversiones I (Electivo)", requisitos: ["Mercado de Valores"], electivo: true },
+    { nombre: "Herramientas Informáticas para las Finanzas (Electivo)", requisitos: ["Mercado de Valores"], electivo: true },
+    { nombre: "Gestión Ambiental (Electivo)", requisitos: ["Ética y Sostenibilidad Empresarial"], electivo: true },
+    { nombre: "Resolución de Conflictos y Negociación (Electivo)", requisitos: ["Legislación Laboral"], electivo: true },
+    { nombre: "Trade y Retail Marketing (Electivo)", requisitos: ["Gestión Comercial"], electivo: true },
+  ],
+  10: [
+    { nombre: "Dirección Estratégica", requisitos: ["Gerencia Financiera"] },
+    { nombre: "Gerencia de Personas", requisitos: ["Taller de Liderazgo y Habilidades Gerenciales"] },
+    { nombre: "Seminario de Investigación en Administración II", requisitos: ["Seminario de Investigación en Administración I"] },
+    { nombre: "Gerencia de Marketing", requisitos: ["Gestión Comercial"] },
+    { nombre: "Business Analytics (Electivo)", requisitos: ["Inteligencia de Negocios"], electivo: true },
+    { nombre: "Inteligencia Artificial para la Gestión (Electivo)", requisitos: ["Tecnologías de Información para la Gestión"], electivo: true },
+    { nombre: "Gestión del Servicio (Electivo)", requisitos: ["Gestión de la Cadena de Suministro"], electivo: true },
+    { nombre: "Modelos de Optimización Logística (Electivo)", requisitos: ["Gestión de la Cadena de Suministro"], electivo: true },
+    { nombre: "Gestión de Riesgos y Seguros (Electivo)", requisitos: ["Gerencia Financiera"], electivo: true },
+    { nombre: "Gestión de Inversiones II (Electivo)", requisitos: ["Gestión de Inversiones I"], electivo: true },
+    { nombre: "Coaching, Mindfulness e Inteligencia Emocional (Electivo)", requisitos: ["Taller de Liderazgo y Habilidades Gerenciales"], electivo: true },
+    { nombre: "Gobierno Corporativo y Compliance (Electivo)", requisitos: ["Ética y Sostenibilidad Empresarial"], electivo: true },
+    { nombre: "Marketing B2B (Electivo)", requisitos: ["Gestión Comercial"], electivo: true },
+  ]
+};
 
-const STORAGE_KEY = 'progresoAdministracion';
-
-const grid = document.getElementById('grid');
-let progreso = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+const grid = document.getElementById("grid");
 
 function guardarProgreso() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progreso));
+  localStorage.setItem("progresoAdministracion", JSON.stringify(data));
 }
 
-function crearCurso(curso, ciclo) {
-  const div = document.createElement('div');
-  div.className = 'course';
-  div.textContent = curso.nombre;
-  div.dataset.nombre = curso.nombre;
-  div.dataset.ciclo = ciclo;
+function cargarProgreso() {
+  const progreso = localStorage.getItem("progresoAdministracion");
+  if (progreso) {
+    const parsed = JSON.parse(progreso);
+    for (const ciclo in parsed) {
+      parsed[ciclo].forEach((curso, i) => {
+        data[ciclo][i].estado = curso.estado;
+      });
+    }
+  }
+}
 
-  const estado = progreso[curso.nombre];
-  if (estado === 'completed') {
-    div.classList.add('completed');
-  } else if (estado === 'unlocked') {
-    div.classList.add('unlocked');
-  } else {
-    div.classList.add('locked');
+function crearCurso(curso) {
+  const div = document.createElement("div");
+  div.className = "curso";
+  div.dataset.state = curso.estado || "locked";
+  div.innerHTML = `<h3>${curso.nombre}</h3>`;
+
+  if (curso.requisitos) {
+    const req = document.createElement("small");
+    req.textContent = `Requiere: ${curso.requisitos.join(", ")}`;
+    div.appendChild(req);
   }
 
-  div.onclick = () => manejarClick(div, curso);
+  div.addEventListener("click", () => {
+    if (div.dataset.state === "unlocked") {
+      div.dataset.state = "completed";
+      curso.estado = "completed";
+      actualizarDesbloqueos();
+      guardarProgreso();
+    } else if (div.dataset.state === "completed") {
+      div.dataset.state = "unlocked";
+      curso.estado = "unlocked";
+      actualizarDesbloqueos();
+      guardarProgreso();
+    }
+  });
+
+  curso.element = div;
   return div;
 }
 
-function manejarClick(div, curso) {
-  const estado = progreso[curso.nombre];
-
-  if (estado === 'locked') return;
-
-  if (estado === 'unlocked') {
-    progreso[curso.nombre] = 'completed';
-  } else if (estado === 'completed') {
-    progreso[curso.nombre] = 'unlocked';
+function actualizarDesbloqueos() {
+  const completados = new Set();
+  for (const ciclo in data) {
+    data[ciclo].forEach((curso) => {
+      if (curso.estado === "completed") {
+        completados.add(curso.nombre);
+      }
+    });
   }
 
-  actualizarCursos();
-  guardarProgreso();
-}
+  for (const ciclo in data) {
+    data[ciclo].forEach((curso) => {
+      if (curso.estado === "completed") return;
 
-function actualizarCursos() {
-  grid.innerHTML = '';
-  const completados = new Set(Object.keys(progreso).filter(k => progreso[k] === 'completed'));
-
-  data.forEach((columna, idx) => {
-    const colDiv = document.createElement('div');
-    colDiv.className = 'column';
-    colDiv.innerHTML = `<h3>Ciclo ${columna.ciclo}</h3>`;
-
-    columna.cursos.forEach(curso => {
-      const requisitos = curso.req || [];
-      const nombreBase = curso.nombre.replace(" (Electivo)", "");
-      const cumplidos = requisitos.every(r => completados.has(r));
-      const estado = progreso[curso.nombre];
-
-      if (!estado || estado === 'locked') {
-        progreso[curso.nombre] = cumplidos ? 'unlocked' : 'locked';
+      if (!curso.requisitos || curso.requisitos.every((req) => completados.has(req))) {
+        curso.estado = "unlocked";
+        curso.element.dataset.state = "unlocked";
+      } else {
+        curso.estado = "locked";
+        curso.element.dataset.state = "locked";
       }
-
-      const divCurso = crearCurso(curso, columna.ciclo);
-      colDiv.appendChild(divCurso);
     });
-
-    grid.appendChild(colDiv);
-  });
+  }
 }
 
 function reiniciar() {
-  if (confirm("¿Estás seguro de que deseas reiniciar tu progreso?")) {
-    progreso = {};
-    guardarProgreso();
-    actualizarCursos();
+  for (const ciclo in data) {
+    data[ciclo].forEach((curso) => {
+      curso.estado = "locked";
+      curso.element.dataset.state = "locked";
+    });
   }
+  actualizarDesbloqueos();
+  guardarProgreso();
 }
 
-actualizarCursos();
+function render() {
+  grid.innerHTML = "";
+  for (const ciclo in data) {
+    const columna = document.createElement("section");
+    const titulo = document.createElement("h2");
+    titulo.textContent = `Ciclo ${ciclo}`;
+    columna.appendChild(titulo);
 
+    data[ciclo].forEach((curso) => {
+      const div = crearCurso(curso);
+      columna.appendChild(div);
+    });
 
+    grid.appendChild(columna);
+  }
+
+  actualizarDesbloqueos();
+}
+
+cargarProgreso();
+render();
