@@ -67,7 +67,7 @@ const data = {
     { nombre: "Gestión de la Cadena de Suministro", requisitos: ["Logística y Comercio Internacional"] },
     { nombre: "Mercado de Valores", requisitos: ["Gestión Financiera"] },
     { nombre: "Ética y Sostenibilidad Empresarial", requisitos: ["Legislación Laboral"] },
-    { nombre: "Taller de Investigación Empresarial", requisitos: ["Planeamiento Estratégico II"] },
+    { nombre: "Taller de Investigación Empresarial", requisitos: ["Planeamiento Estratégico II y Investigación y Análisis de Mercado"] },
     { nombre: "E.R.P. para la Gestión Empresarial (Electivo)", requisitos: ["Tecnologías de Información para la Gestión"], electivo: true },
     { nombre: "Turismo Sostenible (Electivo)", requisitos: ["Diseño Organizacional"], electivo: true },
     { nombre: "Agilidad Organizacional (Electivo)", requisitos: ["Taller de Innovación y Creatividad Empresarial"], electivo: true },
